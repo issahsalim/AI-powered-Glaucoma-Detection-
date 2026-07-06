@@ -1,0 +1,62 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .toggle-password-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 8px;
+        margin-left: 10px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        background-color: #f8fafc;
+        color: #33475b;
+        font-size: 0.9rem;
+        cursor: pointer;
+    } 
+    .toggle-password-btn:hover {
+        background-color: #e2e8f0;
+    }
+    .toggle-password-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordInputs = Array.from(document.querySelectorAll('input[type="password"]'));
+        passwordInputs.forEach(function (passwordInput) {
+            const parent = passwordInput.parentElement;
+            if (!parent || parent.querySelector('.toggle-password-btn')) {
+                return;
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'toggle-password-wrapper';
+
+            parent.replaceChild(wrapper, passwordInput);
+            wrapper.appendChild(passwordInput);
+
+            const toggleButton = document.createElement('button');
+            toggleButton.type = 'button';
+            toggleButton.className = 'toggle-password-btn';
+            toggleButton.textContent = 'Show';
+            toggleButton.addEventListener('click', function () {
+                const currentlyHidden = passwordInput.type === 'password';
+                passwordInput.type = currentlyHidden ? 'text' : 'password';
+                toggleButton.textContent = currentlyHidden ? 'Hide' : 'Show';
+            });
+
+            wrapper.appendChild(toggleButton);
+        });
+    });
+</script>
+{% endblock %}

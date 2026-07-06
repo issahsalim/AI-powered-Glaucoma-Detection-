@@ -1,0 +1,60 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Django local data
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+ml_model/ 
+
+# Large model and training artifacts
+*.pt
+*.pth
+*.onnx
+*.h5
+*.bin
+*.zip
+*.tar.gz
+*.gz
+
+glaucoma_models/
+resNET_models/
+VITmodel/
+
+# Dataset and local assets
+Dataset/
+dataset/
+img/
+images/
+
+# Node / Expo
+node_modules/
+.expo/
+.expo-shared/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Documents and presentations
+*.docx
+*.pptx
+*.pdf

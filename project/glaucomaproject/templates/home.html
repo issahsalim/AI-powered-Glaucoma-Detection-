@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👁️ Glauco-Guard AI — Clinical Report Vault & Dashboard</title>
+    <!-- Google Fonts Outfit & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ionicons for clinical assets -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <style>
+        :root {
+            --primary: #005b9f;
+            --primary-light: #e6f4fe;
+            --primary-dark: #004275;
+            --success: #38a169;
+            --success-light: #f0fff4;
+            --warning: #dd6b20;
+            --danger: #e53e3e;
+            --danger-light: #fff5f5;
+            --gray-light: #f7fafc;
+            --gray-border: #e2e8f0;
+            --text-main: #1a202c;
+            --text-muted: #718096;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --shadow-premium: 0 10px 30px rgba(0, 91, 159, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+            --radius-main: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Header Styling --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(0, 91, 159, 0.2);
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(0, 91, 159, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 91, 159, 0.25);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--primary);
+            border: 1.5px solid var(--primary-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* --- Stats Grid Styling --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-main);
+            padding: 24px;
+            box-shadow: var(--shadow-premium);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-info p {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .stat-info h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-blue {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .icon-red {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .icon-green {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .icon-orange {
+            background-color: #fffaf0;
+            color: var(--warning);
+        }
+
+        /* --- Vault Table Section --- */
+        .vault-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-main);
+            padding: 32px;
+            box-shadow: var(--shadow-premium);
+            backdrop-filter: blur(10px);
+        }
+
+        .vault-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .vault-title-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vault-title-box ion-icon {
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .vault-title-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .vault-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* --- Custom Responsive Table --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background-color: var(--gray-light);
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        th {
+            padding: 14px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-border);
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(230, 244, 254, 0.25);
+        }
+
+        td {
+            padding: 16px 18px;
+            font-size: 14px;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .case-id {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .patient-name {
+            font-weight: 600;
+        }
+
+        .date-text {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Model Badge styles */
+        .engine-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .engine-vit {
+            background-color: #f0f9ff;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .engine-resnet {
+            background-color: #faf5ff;
+            color: #6b21a8;
+            border-color: #e9d5ff;
+        }
+
+        /* Diagnosis Badges */
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .badge-glaucoma {
+            background-color: var(--danger-light);
+            color: var(--danger);
+            border: 1px solid #feb2b2;
+        }
+
+        .badge-normal {
+            background-color: var(--success-light);
+            color: var(--success);
+            border: 1px solid #9ae6b4;
+        }
+
+        .prob-bar-container {
+            width: 100px;
+            height: 6px;
+            background-color: var(--gray-border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .prob-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .prob-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn-download {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+            border: 1.5px solid transparent;
+        }
+
+        .btn-download:hover {
+            background-color: var(--primary);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 91, 159, 0.15);
+        }
+
+        /* --- Empty State Styling --- */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .empty-state ion-icon {
+            font-size: 64px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* --- Footer Styling --- */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Header Section -->
+    <header>
+        <div class="header-left">
+            <div class="logo-box">
+                <ion-icon name="eye"></ion-icon>
+            </div>
+            <div>
+                <h1>Glauco-Guard AI</h1>
+                <p class="subtitle">Clinical Administrator & Diagnostic Report Vault</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="/admin/" class="btn btn-secondary">
+                <ion-icon name="settings-outline"></ion-icon>
+                Django Admin Portal
+            </a>
+        </div>
+    </header>
+
+    <!-- Stats Grid Section -->
+    <div class="stats-grid">
+        <!-- Stat Card 1 -->
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Total Screenings</p>
+                <h2>{{ total_scans }}</h2>
+            </div>
+            <div class="stat-icon icon-blue">
+                <ion-icon name="shield-checkmark-outline"></ion-icon>
+            </div>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Glaucoma Cases</p>
+                <h2 style="color: var(--danger)">{{ glaucoma_scans }}</h2>
+            </div>
+            <div class="stat-icon icon-red">
+                <ion-icon name="warning-outline"></ion-icon>
+            </div>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Normal Retinas</p>
+                <h2 style="color: var(--success)">{{ normal_scans }}</h2>
+            </div>
+            <div class="stat-icon icon-green">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </div>
+        </div>
+        <!-- Stat Card 4 -->
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Prevalence Rate</p>
+                <h2>{{ glaucoma_rate }}%</h2>
+            </div>
+            <div class="stat-icon icon-orange">
+                <ion-icon name="analytics-outline"></ion-icon>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vault Section -->
+    <div class="vault-section">
+        <div class="vault-header">
+            <div class="vault-title-box">
+                <ion-icon name="folder-open-outline"></ion-icon>
+                <h3>Clinical Scans & Report Vault</h3>
+                <span class="vault-badge">{{ total_scans }} Files</span>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            {% if total_scans > 0 %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case ID</th>
+                            <th>Patient Details</th>
+                            <th>AI engine</th>
+                            <th>AI diagnosis</th>
+                            <th>Glaucoma Risk</th>
+                            <th style="text-align: right;">Clinical Report</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in diagnoses %}
+                            <tr>
+                                <td class="case-id">#DIAG-{{ item.id|stringformat:"04d" }}</td>
+                                <td>
+                                    <div class="patient-name">{{ item.patient_name }}</div>
+                                    <div class="date-text">{{ item.created_at|date:"j M Y, g:i A" }}</div>
+                                </td>
+                                <td>
+                                    {% if item.model_used == 'ResNet' %}
+                                        <span class="engine-badge engine-resnet">
+                                            🧠 ResNet CNN
+                                        </span>
+                                    {% else %}
+                                        <span class="engine-badge engine-vit">
+                                            ⚡ ViT Engine
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.prediction == 'glaucoma' %}
+                                        <span class="result-badge badge-glaucoma">
+                                            ⚠️ GLAUCOMA DETECTED
+                                        </span>
+                                    {% else %}
+                                        <span class="result-badge badge-normal">
+                                            🟢 NO GLAUCOMA
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="prob-text">{{ item.glaucoma_prob }}%</span>
+                                        <div class="prob-bar-container">
+                                            <div class="prob-bar" style="width: {{ item.glaucoma_prob }}%; background-color: {% if item.glaucoma_prob > 50 %}var(--danger){% else %}var(--success){% endif %};"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: right;">
+                                    <a href="/api/report/{{ item.id }}/" class="btn-download">
+                                        <ion-icon name="document-text-outline"></ion-icon>
+                                        Download PDF
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <h4>No Clinical Records Found</h4>
+                    <p>Screenings performed in the Glauco-Guard mobile application will sync here dynamically in real-time.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Glauco-Guard AI Final Year Project Dashboard. All clinical intelligence is processed securely.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

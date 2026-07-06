@@ -1,0 +1,110 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Log in" %}{% endblock %}
+
+{% block content %}
+<div class="admin-login-wrapper">
+    <h1>{% trans "Log in" %}</h1>
+    <form action="" method="post" id="login-form">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="errornote">
+                <p>{{ form.errors.as_text|linebreaksbr }}</p>
+            </div>
+        {% endif %}
+
+        <div class="form-row">
+            <label for="id_username">{% trans "Username:" %}</label>
+            {{ form.username }}
+        </div>
+
+        <div class="form-row password-row">
+            <label for="id_password">{% trans "Password:" %}</label>
+            <div class="password-field-group">
+                {{ form.password }}
+                <button type="button" id="toggle-password" class="toggle-password-btn">
+                    {% trans "Show" %}
+                </button>
+            </div>
+        </div>
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+
+        <div class="submit-row">
+            <input type="submit" value="{% trans "Log in" %}" />
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .admin-login-wrapper {
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+    .admin-login-wrapper h1 {
+        margin-bottom: 24px;
+        font-size: 2rem;
+        color: #172b4d;
+    }
+    .form-row {
+        margin-bottom: 18px;
+    }
+    .form-row label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #33475b;
+    }
+    .password-field-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .password-field-group input[type="password"],
+    .password-field-group input[type="text"] {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+        color: #1f2937;
+    }
+    .toggle-password-btn {
+        border: 1px solid #cbd5e1;
+        background: #f8fafc;
+        color: #33475b;
+        padding: 10px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+    }
+    .toggle-password-btn:hover {
+        background: #e2e8f0;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordInput = document.getElementById('id_password');
+        const toggleButton = document.getElementById('toggle-password');
+        if (!passwordInput || !toggleButton) {
+            return;
+        }
+
+        toggleButton.addEventListener('click', function () {
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+            toggleButton.textContent = isHidden ? 'Hide' : 'Show';
+        });
+    });
+</script>
+{% endblock %}
